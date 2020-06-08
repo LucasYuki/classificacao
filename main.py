@@ -50,26 +50,29 @@ def main():
     
     config = locals()
     
-    #if not functions.verify_directory(experiment):
-    #    sys.exit()
+    if not functions.verify_directory(experiment):
+        sys.exit()
                 
     # salva as configurações utilizadas no modelo
-    #with open(experiment + "/config.json", "w") as File:
-    #    json.dump(config, File)
+    with open(experiment + "/config.json", "w") as File:
+        json.dump(config, File)
     
     index_col = ["Grandeza", "Condicao"]
     models_col  = [str(i) for i in range(times)]
     
     
-    for model_num in [3]:#[1, 2, 3]:
+    for model_num in [1, 2, 3]:
         files, columns = functions.get_files(model_num)
         
-        acc_df = pd.read_csv(experiment+"/Model"+str(model_num)+"/accuracy.csv",
-                             index_col=[0, 1])
-        loss_df = pd.read_csv(experiment+"/Model"+str(model_num)+"/loss.csv",
-                             index_col=[0, 1])
+        acc_df = None
+        loss_df = None
+        
+        #acc_df = pd.read_csv(experiment+"/Model"+str(model_num)+"/accuracy.csv",
+        #                     index_col=[0, 1])
+        #loss_df = pd.read_csv(experiment+"/Model"+str(model_num)+"/loss.csv",
+        #                     index_col=[0, 1])
     
-        for grand in ["Zme"]:#columns["Grandeza"]:
+        for grand in columns["Grandeza"]:
             np.random.seed(seed)
             random.set_seed(seed)
             
