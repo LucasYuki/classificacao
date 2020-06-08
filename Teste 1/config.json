@@ -1,1 +1,1 @@
-{"experiment": "Teste 1", "train_len": 1000, "val_len": 1000, "test_len": 1000, "times": 10, "n_hidden": 2, "n_neurons": 256, "dropout_prob": 0.2, "noise": 0.1, "patience": 200, "epochs": 10000, "batch": 1000, "n_predictions": 100, "seed": 42}
+{"experiment": "Teste 1", "train_len": 1000, "val_len": 1000, "test_len": 1000, "times": 10, "n_hidden": 5, "n_neurons": 256, "dropout_prob": 0.4, "noise": 0.1, "patience": 250, "epochs": 10000, "batch": 1000, "n_predictions": 100, "seed": 42, "activation": "tanh"}

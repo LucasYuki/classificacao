@@ -1,1 +1,0 @@
-{"experiment": "Teste 2", "train_len": 1000, "val_len": 1000, "test_len": 1000, "times": 10, "n_hidden": 3, "n_neurons": 256, "dropout_prob": 0.3, "noise": 0.1, "patience": 200, "epochs": 10000, "batch": 1000, "n_predictions": 100, "seed": 42}

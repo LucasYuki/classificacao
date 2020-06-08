@@ -26,8 +26,8 @@ def verify_directory(dir_path):
             return False
     return True
     
-def get_files():
-    files = pd.read_csv("arquivos.csv", index_col=[0,1,2])
+def get_files(model_num):
+    files = pd.read_csv("arquivos_Model"+str(model_num)+".csv", index_col=[0,1,2])
     columns = {}
     for i in range(len(files.index.names)):
         columns[files.index.names[i]] = list(files.index.unique(i))
@@ -42,8 +42,8 @@ def normalize(files):
     std  = read_data(files.loc["std"][0]).to_numpy()
     return (data-mean)/std
 
-def get_splited_data(grand, train_len, val_len, test_len):
-    files, columns = get_files()
+def get_splited_data(grand, train_len, val_len, test_len, model_num):
+    files, columns = get_files(model_num)
     Train = {"x":[], "y":[]}
     Val   = {"x":[], "y":[]}
     Test  = {"x":{}, "y":{}, "y one_hot":{}}
@@ -75,11 +75,10 @@ def get_splited_data(grand, train_len, val_len, test_len):
     Train["y"] = Train["y"][index].reshape((-1, Train["y"].shape[-1]))
     return Train, Val, Test, count
     
-    
 def predict(model, x, n_predictions=100):
     predictions = []
     for i in range(n_predictions):
-        predictions.append(model(x, training=True))
+        predictions.append(model(x))
     predictions = np.stack(predictions, axis=1)
     return predictions
 
