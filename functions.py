@@ -26,8 +26,8 @@ def verify_directory(dir_path):
             return False
     return True
     
-def get_files(model_num):
-    files = pd.read_csv("arquivos_Model"+str(model_num)+".csv", index_col=[0,1,2])
+def get_files(directory_df):
+    files = pd.read_csv(directory_df, index_col=[0,1,2])
     columns = {}
     for i in range(len(files.index.names)):
         columns[files.index.names[i]] = list(files.index.unique(i))
@@ -42,8 +42,8 @@ def normalize(files):
     std  = read_data(files.loc["std"][0]).to_numpy()
     return (data-mean)/std
 
-def get_splited_data(grand, train_len, val_len, test_len, model_num):
-    files, columns = get_files(model_num)
+def get_splited_data(grand, train_len, val_len, test_len, directory_df):
+    files, columns = get_files(directory_df)
     Train = {"x":[], "y":[]}
     Val   = {"x":[], "y":[]}
     Test  = {"x":{}, "y":{}, "y one_hot":{}}
@@ -75,12 +75,38 @@ def get_splited_data(grand, train_len, val_len, test_len, model_num):
     Train["y"] = Train["y"][index].reshape((-1, Train["y"].shape[-1]))
     return Train, Val, Test, count
     
-def predict(model, x, n_predictions=100):
+def predict(model, x, n_per_pred=100):
     predictions = []
-    for i in range(n_predictions):
+    for i in range(n_per_pred):
         predictions.append(model(x))
     predictions = np.stack(predictions, axis=1)
     return predictions
+
+def plot_train_hist(path, figsize=(10,5)):
+    data = pd.read_csv(path+"\\train_history.csv")
+
+    fig, ax = plt.subplots(figsize=figsize)  # Create a figure and an axes.
+    ax.plot(data["epoch"], data["loss"], label='train', lw=0.5)  # Plot some data on the axes.
+    ax.plot(data["epoch"], data["val_loss"], label='validate', lw=0.5)  # Plot more data on the axes...
+    ax.set_xlabel('epoch')  # Add an x-label to the axes.
+    ax.set_ylabel('loss')  # Add a y-label to the axes.
+    ax.set_title("loss")  # Add a title to the axes.
+    ax.legend()  # Add a legend.
+    plt.grid(True)
+    plt.savefig(path+"//train_history_loss.png", quality=100)
+    plt.savefig(path+"//train_history_loss.SVG", quality=100)
+    
+    fig, ax = plt.subplots(figsize=figsize)  # Create a figure and an axes.
+    ax.plot(data["epoch"], data["accuracy"], label='train', lw=0.5)  # Plot some data on the axes.
+    ax.plot(data["epoch"], data["val_accuracy"], label='validate', lw=0.5)  # Plot more data on the axes...
+    ax.set_xlabel('epoch')  # Add an x-label to the axes.
+    ax.set_ylabel('accuracy')  # Add a y-label to the axes.
+    ax.set_title("accuracy")  # Add a title to the axes.
+    ax.legend()  # Add a legend.
+    plt.grid(True)
+    plt.savefig(path+"//train_history_accuracy.png", quality=100)
+    plt.savefig(path+"//train_history_accuracy.SVG", quality=100)
+    return [path+"//train_history_loss.png", path+"//train_history_accuracy.png"]
 
 def heat_map(figsize,
              data,

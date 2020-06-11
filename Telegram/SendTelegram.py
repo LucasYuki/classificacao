@@ -5,12 +5,14 @@ Detailed documentation of Slack Incoming Webhooks:
 https://api.slack.com/incoming-webhooks
 '''
 
-import json
-import requests
+
 from time import time
-import base64
-import io
 import pandas as pd
+import requests
+import base64
+import json
+import sys
+import io
 
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
@@ -41,15 +43,16 @@ def SendTelegram(command, text):
                               'channel_chat_created': False, 
                               'from': {'id': 0, 'first_name': '', 'is_bot': False, 'language_code': ''}}}
     slack_data['_effective_message']=slack_data["message"].copy()
-    response = requests.post(
-        webhook_url, data=json.dumps(slack_data),
-        headers={'Content-Type': 'application/json'}
-    )
-    if response.status_code != 200:
-        raise ValueError(
-            'Request to slack returned an error %s, the response is:\n%s'
-            % (response.status_code, response.text)
-        )
+    try:
+        response = requests.post(
+            webhook_url, data=json.dumps(slack_data),
+            headers={'Content-Type': 'application/json'})
+        if response.status_code != 200:
+            raise ValueError(
+                'Request to slack returned an error %s, the response is:\n%s'
+                % (response.status_code, response.text))
+    except:
+        print("Unexpected error:", sys.exc_info()[0])
     
 def SendImage(path, show=False):
     if isinstance(path, str):
@@ -96,10 +99,3 @@ def send_df_as_img(df, title = ""):
     img.save(buf, format='png')
     
     SendImage(buf)
-"""
-#data = pd.read_csv('C:/Users/lucas/Documents/Rotating-Machinery-Imbalance-Fault-Diagnosis/Models/teste/0/train_history.csv')
-
-SendImage(path, webhook_url, chat_id)
-SendTelegram('/message', '64/M2d0/models/2', webhook_url, chat_id)
-#SendPlot(data, webhook_url, chat_id)
-"""
