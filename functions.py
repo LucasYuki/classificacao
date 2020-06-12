@@ -42,6 +42,17 @@ def normalize(files):
     std  = read_data(files.loc["std"][0]).to_numpy()
     return (data-mean)/std
 
+def get_all_data(grand, directory_df):
+    files, columns = get_files(directory_df)
+    data = {}
+    
+    for cond in columns["Condicao"]:
+        if grand=="Hfp" and cond=="disart":
+            continue
+        data[cond] = normalize(files.loc[grand, cond])
+    
+    return data
+
 def get_splited_data(grand, train_len, val_len, test_len, directory_df):
     files, columns = get_files(directory_df)
     Train = {"x":[], "y":[]}
