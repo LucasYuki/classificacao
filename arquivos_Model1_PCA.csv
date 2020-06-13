@@ -1,0 +1,16 @@
+Grandeza,Condicao,Tipo,Diretorio
+ER,disart,data,Dados_Modelos/Results_Model1_PCA/ER_disart.txt
+ER,malleusfix,data,Dados_Modelos/Results_Model1_PCA/ER_malleusfix.txt
+ER,normal,data,Dados_Modelos/Results_Model1_PCA/ER_normal.txt
+ER,stapesfix,data,Dados_Modelos/Results_Model1_PCA/ER_stapesfix.txt
+Hfp,malleusfix,data,Dados_Modelos/Results_Model1_PCA/Hfp_malleusfix.txt
+Hfp,normal,data,Dados_Modelos/Results_Model1_PCA/Hfp_normal.txt
+Hfp,stapesfix,data,Dados_Modelos/Results_Model1_PCA/Hfp_stapesfix.txt
+Humbo,disart,data,Dados_Modelos/Results_Model1_PCA/Humbo_disart.txt
+Humbo,malleusfix,data,Dados_Modelos/Results_Model1_PCA/Humbo_malleusfix.txt
+Humbo,normal,data,Dados_Modelos/Results_Model1_PCA/Humbo_normal.txt
+Humbo,stapesfix,data,Dados_Modelos/Results_Model1_PCA/Humbo_stapesfix.txt
+Zme,disart,data,Dados_Modelos/Results_Model1_PCA/Zme_disart.txt
+Zme,malleusfix,data,Dados_Modelos/Results_Model1_PCA/Zme_malleusfix.txt
+Zme,normal,data,Dados_Modelos/Results_Model1_PCA/Zme_normal.txt
+Zme,stapesfix,data,Dados_Modelos/Results_Model1_PCA/Zme_stapesfix.txt

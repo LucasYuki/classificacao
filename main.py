@@ -191,7 +191,7 @@ def train_models(times, # Quantidade de redes que serão treinadas.
 
 def main(model_type,
          data_files,
-         experiment = "Teste 1",
+         experiment,
          train_len  = 1000,
          val_len    = 1000,
          test_len   = 1000,
@@ -201,7 +201,8 @@ def main(model_type,
          batch      = 1000,
          n_per_pred = 100,
          seed       = 42,
-         Telegram   = False):
+         Telegram   = False,
+         norm       = True):
     
     config = locals().copy()
     config["model_type"] = model_type.get_config()
@@ -237,7 +238,7 @@ def main(model_type,
             # prepara os dados para o treinamento
             Train, Val, Test, n_outputs = functions.get_splited_data(grand, train_len, 
                                                                      val_len, test_len,
-                                                                     data_file)
+                                                                     data_file, norm)
             path = experiment+"/"+data_file_name+"/"+grand+"/"
             index = pd.MultiIndex.from_product([[grand],list(Test["y"].keys())+["All"]],
                                            names=index_col)
@@ -246,7 +247,7 @@ def main(model_type,
             
             temp_loss, temp_acc = train_models(times, path, Train, Val, 
                                                Test, index, model_builder,
-                                               patience=patience, 
+                                               patience=patience, Telegram=Telegram,
                                                epochs=epochs, batch=batch, 
                                                n_per_pred=n_per_pred)
             
@@ -265,28 +266,29 @@ def main(model_type,
             loss_df.to_csv(experiment+"/"+data_file_name+"/loss.csv")
 
 if __file__.split("\\")[-1] == "main.py":
-    model_config = {"n_hidden":     5,
+    model_config = {"n_hidden":     7,
                     "n_neurons":    256,
                     "dropout_prob": 0.4,
-                    "noise":        0.1,
+                    "noise":        0.0,
                     "activation":   "tanh"}
     
-    experiment_config = {"experiment": "Teste 2",
+    experiment_config = {"experiment": "Teste 3",
                          "train_len":  1000,
                          "val_len":    1000,
                          "test_len":   1000,
-                         "times":      10,
+                         "times":      5,
                          "patience":   250,
                          "epochs":     10000,
                          "batch":      1000,
                          "n_per_pred": 100,
                          "seed":       42,
-                         "Telegram":   False}
+                         "Telegram":   True,
+                         "norm":       False}
     
     model = model1(**model_config)
     
-    data_files = ["arquivos_Model1.csv", 
-                  "arquivos_Model2.csv",
-                  "arquivos_Model3.csv"]
+    data_files = ["arquivos_Model1_PCA.csv", 
+                  "arquivos_Model2_PCA.csv",
+                  "arquivos_Model3_PCA.csv"]
     
     main(model_type=model, data_files=data_files, **experiment_config)

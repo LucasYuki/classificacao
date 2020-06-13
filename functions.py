@@ -34,7 +34,7 @@ def get_files(directory_df):
     return (files, columns)
 
 def read_data(path):
-    return pd.read_csv(path, sep="	",  header=None)
+    return pd.read_csv(path, sep="	",  header=None, dtype="float")
 
 def normalize(files):
     data = read_data(files.loc["data"][0]).to_numpy()
@@ -42,18 +42,20 @@ def normalize(files):
     std  = read_data(files.loc["std"][0]).to_numpy()
     return (data-mean)/std
 
-def get_all_data(grand, directory_df):
+def get_all_data(grand, directory_df, norm=True):
     files, columns = get_files(directory_df)
     data = {}
     
     for cond in columns["Condicao"]:
         if grand=="Hfp" and cond=="disart":
             continue
-        data[cond] = normalize(files.loc[grand, cond])
-    
+        if norm:
+            data[cond] = normalize(files.loc[grand, cond])
+        else:
+            data[cond] = read_data(files.loc[grand, cond].loc["data"][0]).to_numpy()
     return data
 
-def get_splited_data(grand, train_len, val_len, test_len, directory_df):
+def get_splited_data(grand, train_len, val_len, test_len, directory_df, norm=True):
     files, columns = get_files(directory_df)
     Train = {"x":[], "y":[]}
     Val   = {"x":[], "y":[]}
@@ -63,7 +65,10 @@ def get_splited_data(grand, train_len, val_len, test_len, directory_df):
     for cond in columns["Condicao"]:
         if grand=="Hfp" and cond=="disart":
             continue
-        temp = normalize(files.loc[grand, cond])
+        if norm:
+            temp = normalize(files.loc[grand, cond])
+        else:
+            temp = read_data(files.loc[grand, cond].loc["data"][0]).to_numpy()
         Train["x"].append(temp[:train_len, :])
         Train["y"].append(np.ones((train_len, 1), dtype=int)*count)
         Val["x"].append(temp[train_len:train_len+val_len, :])
